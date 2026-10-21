@@ -1,3 +1,7 @@
 * text=auto eol=lf
 research/eia_media/BRIEF.txt -text whitespace=cr-at-eol
 research/eia_media/dashboard/archive/BRIEF.txt -text whitespace=cr-at-eol
+
+# Imported Markdown intentionally preserves two-space hard line breaks.
+research/eia_media/imports/*.md whitespace=-blank-at-eol
+research/eia_media/dashboard/archive/imports/*.md whitespace=-blank-at-eol
