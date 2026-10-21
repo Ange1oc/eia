@@ -9,20 +9,22 @@
   <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
   <script defer src="site-data.js"></script>
+  <script defer src="vendor/markdown-it.min.js"></script>
   <script defer src="app.js"></script>
 </head>
 <body>
   <a class="skip" href="#content">Перейти к содержанию</a>
   <header class="topbar">
     <button class="menu-toggle icon-button" aria-label="Открыть меню" aria-expanded="false">☰</button>
-    <a class="brand" href="#home"><span class="brand-mark">E</span><span>EIA <span class="brand-sub">ОТКРЫТОЕ ДОСЬЕ</span></span></a>
+    <a class="brand" href="#home"><span class="brand-mark">E</span><span>EIA <span class="brand-sub">ЗА МЕДИАВИТРИНОЙ</span></span></a>
     <form id="search-form" role="search"><label class="sr-only" for="global-search">Поиск по всему исследованию</label><span aria-hidden="true">⌕</span><input id="global-search" type="search" placeholder="Человек, компания, документ…" autocomplete="off"><kbd>/</kbd><button class="sr-only" type="submit">Найти</button></form>
-    <span class="edition">Срез на 21 октября 2026 <span class="live-dot"></span></span>
+    <span class="edition">Срез на 22 октября 2026 <span class="live-dot"></span></span>
   </header>
   <aside class="sidebar" id="sidebar">
     <div class="nav-label">ИССЛЕДОВАНИЕ</div>
     <nav aria-label="Основная навигация">
       <a href="#home" data-nav="home"><span>◈</span>Главные результаты</a>
+      <a href="#archive/GOVERNMENT_CONNECTIONS.md" data-nav="government"><span>↗</span>Государственные связи</a>
       <a href="#explore" data-nav="explore"><span>⌘</span>Исследовать связи</a>
       <a href="#entities" data-nav="entities"><span>◎</span>Люди и организации</a>
       <a href="#timeline" data-nav="timeline"><span>↳</span>Хронология</a>
@@ -33,12 +35,12 @@
       <a href="#leads" data-nav="leads"><span>◇</span>Открытые вопросы</a>
       <a href="#archive" data-nav="archive"><span>≡</span>Полные материалы</a>
     </nav>
-    <div class="sidebar-note"><span class="nav-label">КАК ЧИТАТЬ</span><p>Факт, заявление и гипотеза имеют разный вес.</p><a href="#method">Методика и шкала A–D <span>↗</span></a></div>
+    <div class="sidebar-note"><span class="nav-label">КАК ЧИТАТЬ</span><p>Факт, заявление и гипотеза имеют разный вес.</p><a href="#method">Как проверялись факты <span>↗</span></a></div>
     <div class="sidebar-bottom">Независимый исследовательский материал.<br>Не является сайтом EIA Media.</div>
   </aside>
   <main id="content" tabindex="-1"></main>
   <dialog id="evidence-dialog" aria-labelledby="dialog-title"><div class="dialog-head"><span class="eyebrow">ДОКАЗАТЕЛЬНАЯ БАЗА</span><button data-action="close-dialog" class="icon-button" aria-label="Закрыть">✕</button></div><div id="dialog-body"></div></dialog>
-  <footer class="mobile-footer">EIA · Открытое досье · 21.10.2026</footer>
+  <footer class="mobile-footer">EIA · Открытое досье · 22.10.2026</footer>
   <noscript>Для поиска и интерактивного графа включите JavaScript. Все полные материалы доступны в папке <a href="archive/FULL_REPORT.md">archive</a>.</noscript>
 </body>
 </html>

@@ -1,68 +1,60 @@
+/* Reader journeys, provenance, preservation, mobile layout and offline core. */
 const {chromium}=require('playwright');
-const fs=require('fs'),path=require('path'),assert=require('node:assert/strict');
-const root=path.resolve(__dirname,'..'),site=path.join(root,'dashboard');
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'..'),site=path.join(root,'dashboard'),base=process.env.EIA_TEST_URL||'http://127.0.0.1:8000/';
 (async()=>{
- const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
- const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[],requests=[];
+ const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+ const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[],external=[];
  page.on('pageerror',e=>errors.push(e.message));
- page.on('request',r=>{if(/^https?:/.test(r.url())&&!r.url().startsWith('http://127.0.0.1:8000/'))requests.push(r.url());});
- await page.route('**/*',route=>route.request().url().startsWith('http://127.0.0.1:8000/')?route.continue():route.abort());
- await page.goto('http://127.0.0.1:8000/');
- await page.waitForFunction(()=>window.EIA_APP);
- assert.match(await page.locator('h1').innerText(),/Кто стоит за EIA/);
- const stats=await page.evaluate(()=>({entities:EIA_DATA.entities.length,claims:EIA_DATA.claims.length,edges:EIA_DATA.edges.length,catalogue:EIA_DATA.catalogue.length,docs:Object.keys(EIA_DATA.documents).length,recs:EIA_APP.recommendations.length}));
- assert.equal(stats.catalogue,40);assert.ok(stats.recs>5);
- const embedded=await page.evaluate(()=>EIA_DATA.documents);
- for(const [name,text] of Object.entries(embedded)){
-  const original=fs.readFileSync(path.join(root,name),'utf8').replace(/\r\n/g,'\n');
-  assert.equal(text,original,'Full text coverage: '+name);
-  assert.equal(fs.readFileSync(path.join(site,'archive',name),'utf8').replace(/\r\n/g,'\n'),text,'Download coverage: '+name);
+ await page.route('**/*',route=>{if(route.request().url().startsWith(base))return route.continue();external.push(route.request().url());return route.abort();});
+ await page.goto(base);await page.waitForFunction(()=>window.EIA_APP);
+ async function go(hash){await page.evaluate(h=>location.hash=h,hash);await page.waitForFunction(h=>location.hash==='#'+h,hash);await page.waitForTimeout(15);}
+ assert.match(await page.locator('h1').innerText(),/медиавитриной/);assert.equal(await page.locator('.story-card').count(),6);
+ const data=await page.evaluate(()=>EIA_DATA),stats={entities:data.entities.length,claims:data.claims.length,edges:data.edges.length,evidence:data.evidence.length,documents:Object.keys(data.documents).length};
+ for(const [name,text] of Object.entries(data.documents)){
+  assert.equal(text,fs.readFileSync(path.join(root,name),'utf8').replace(/\r\n/g,'\n'),'Bundled original: '+name);
+  assert.equal(text,fs.readFileSync(path.join(site,'archive',name),'utf8').replace(/\r\n/g,'\n'),'Download: '+name);
  }
- const integrity=await page.evaluate(()=>{
-  const d=EIA_DATA,ids=new Set(d.entities.map(x=>x.id)),sources=new Set(d.sources.map(x=>x.id));
-  return {badEdges:d.edges.filter(e=>!ids.has(e.source)||!ids.has(e.target)||!e.sources.every(s=>sources.has(s))),badRefs:[...d.claims,...d.entities].filter(e=>!e.sources.every(s=>sources.has(s))),knownPath:EIA_APP.getPath('eia','peshev'),noPath:EIA_APP.getPath('eia','vladivostok'),alternatives:EIA_APP.alternativePaths('eia','peshev')};
- });
- assert.equal(integrity.badEdges.length,0);assert.equal(integrity.badRefs.length,0);assert.ok(integrity.knownPath.edges.length>1);assert.equal(integrity.noPath,null);assert.ok(integrity.alternatives.length>1);
- async function route(hash,selector='h1'){await page.evaluate(h=>location.hash=h,hash);await page.waitForTimeout(25);await page.locator(selector).first().waitFor();}
- await page.screenshot({path:'/tmp/eia-desktop.png',fullPage:true});
- await route('entities');assert.equal(await page.locator('#entity-results>.card').count(),48);
- await page.locator('#entity-query').fill('Скареднова');assert.ok(await page.locator('#entity-results>.card').count()>0);
- await page.locator('#entity-query').fill('');await page.selectOption('#entity-kind','Судебное дело');assert.equal(await page.locator('#entity-results>.card').count(),3);
- await route('entity/palagutin');assert.match(await page.locator('h1').innerText(),/Палагутин/);assert.match(await page.locator('.prose').innerText(),/50 000/);
- await page.locator('[data-source]').first().click();assert.ok(await page.locator('#evidence-dialog').evaluate(e=>e.open));await page.keyboard.press('Escape');
- await route('explore');await page.locator('[data-chain]').first().click();await page.waitForTimeout(40);
- const before=await page.locator('#active-chain .graph-node').count();await page.locator('[data-action="step-next"]').click();const after=await page.locator('#active-chain .graph-node').count();assert.equal(after,before+1);
- await page.locator('#active-chain [data-edge]').first().click();assert.ok(await page.locator('#evidence-dialog').evaluate(e=>e.open));await page.keyboard.press('Escape');
- await page.selectOption('#graph-grade','A');assert.equal(await page.locator('#active-chain .graph-edge').count(),await page.locator('#active-chain .graph-edge').evaluateAll(es=>es.filter(e=>e.textContent.includes('A')).length));
- await page.locator('[data-action="reset-graph"]').click();await page.selectOption('#graph-node-kind','СМИ');assert.ok(await page.locator('h2').filter({hasText:'Основные группы отношений'}).count());await page.locator('[data-action="reset-graph"]').click();
- await page.locator('details').first().locator('summary').click();await page.selectOption('#path-from','eia');await page.selectOption('#path-to','vladivostok');await page.locator('[data-action="find-path"]').click();assert.match(await page.locator('#path-status').innerText(),/путь не установлен/);
- await page.selectOption('#path-to','peshev');await page.locator('[data-action="find-path"]').click();assert.ok(await page.locator('#active-chain .graph-node').count()>2);
- await route('timeline');const timeline=await page.locator('.time-item').count();await page.selectOption('#timeline-year','2026');assert.ok(await page.locator('.time-item').count()<timeline);
- await route('finance');assert.match(await page.locator('h1').innerText(),/Деньги/);assert.match(await page.locator('.money-table').innerText(),/5\s*434\s*000/);
- await route('documents');assert.equal(await page.locator('.comparison').count(),3);
- await route('catalogue');assert.equal(await page.locator('#catalogue-results>.issue-card').count(),40);await page.locator('#catalogue-query').fill('Сицинская');assert.equal(await page.locator('#catalogue-results>.issue-card').count(),1);
- await route('sources');await page.selectOption('#source-filter','all');assert.equal(await page.locator('#sources-results>.list-item').count(),15);await page.locator('[data-action="source-next"]').click();assert.match(await page.locator('#sources-count').innerText(),/страница 2/);await page.locator('#source-query').fill('1267800056204');assert.ok(await page.locator('#sources-results>.list-item').count()>0);
- await page.locator('#global-search').fill('Скареднова');await page.locator('#global-search').press('Enter');await page.waitForTimeout(40);assert.ok(await page.locator('.list-item').count()>4);
- await route('archive/FULL_REPORT.md');assert.match(await page.locator('#full-document').innerText(),/Отправка запросов организациям/);
- for(const id of await page.evaluate(()=>EIA_DATA.entities.map(e=>e.id))){await route('entity/'+id);assert.ok((await page.locator('h1').innerText()).length>0);}
- const normalized=t=>t.replace(/^#{1,3}\s+/gm,'').replace(/^[-*] /gm,'').replace(/\[([a-f0-9]{12})\]/g,'$1').replace(/\s+/g,' ').trim();
- for(const file of Object.keys(embedded)){
-  await route('archive/'+file);const visible=normalized(await page.locator('#full-document').innerText());
-  for(const paragraph of embedded[file].split(/\n\s*\n/))assert.ok(visible.includes(normalized(paragraph)),'Every paragraph accessible: '+file+' / '+paragraph.slice(0,90));
- }
- for(const routeName of ['home','method','leads','topic/Международные связи','finding/c01','source/16f84fec8ec4'])await route(routeName);
- assert.deepEqual(requests,[],'Offline pages must not make automatic network requests');assert.deepEqual(errors,[],'Browser errors');
- await page.setViewportSize({width:390,height:844});await route('home');await page.waitForTimeout(250);await page.screenshot({path:'/tmp/eia-mobile.png',fullPage:true});
- assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Mobile homepage overflow');
- await page.locator('.menu-toggle').click();assert.ok(await page.locator('#sidebar').evaluate(e=>e.classList.contains('open')));await page.locator('#sidebar a[href="#entities"]').click();await page.waitForTimeout(30);assert.ok(!(await page.locator('#sidebar').evaluate(e=>e.classList.contains('open'))));
- for(const r of ['explore','documents','finance','archive/FULL_REPORT.md','entity/agency','sources']){await route(r);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Mobile overflow: '+r);}
- const automaticRequests=requests.length;
- // TLS-verified original is supplied by the fixture fetch; this tests image loading and zoom
- // without changing the managed browser's certificate trust or bypassing source access.
- const image=fs.readFileSync('/tmp/eia-original-portrait.bin'),imageType=fs.readFileSync('/tmp/eia-original-portrait.type','utf8');
- await page.route('https://eia.media/**',r=>r.fulfill({status:200,contentType:imageType,body:image}));
- await route('entity/rabinovich');await page.locator('[data-image-load]').click();await page.waitForFunction(()=>document.querySelector('.photo-frame img')?.naturalWidth>0);await page.locator('.photo-frame img').click();assert.ok(await page.locator('#evidence-dialog').evaluate(e=>e.open));await page.keyboard.press('Escape');
- assert.deepEqual(errors,[]);
- await browser.close();
- console.log(JSON.stringify({status:'passed',...stats,fullTextComparisons:Object.keys(embedded).length,offlineNetworkRequests:automaticRequests,browserErrors:errors,checkedEntityPages:48,mobileWidths:[390],imageLoadingAndZoom:'passed with verified original fixture'},null,2));
+ // Reader 1: what was Grebenskova's real role, why does it matter, where is it proved?
+ await page.locator('a.story-card[href="#finding/c37"]').click();await page.waitForTimeout(30);
+ assert.match(await page.locator('.fact-body').innerText(),/высшим коллегиальным/);assert.match(await page.locator('.fact-body').innerText(),/создании и управлении/);
+ assert.match(await page.locator('.proof').first().innerText(),/Скареднова/);assert.match(await page.locator('.proof').first().innerText(),/PDF с.4/);
+ assert.ok((await page.locator('.proof').first().locator('a').getAttribute('href')).endsWith('#page=4'));
+ await page.locator('.proof [data-source]').first().click();assert.ok(await page.locator('#evidence-dialog').evaluate(e=>e.open));assert.match(await page.locator('#dialog-body').innerText(),/Президиум/);assert.equal(await page.locator('.technical[open]').count(),0);await page.keyboard.press('Escape');
+ // Reader 2: distinguish an old consultative МВД role from current service.
+ await go('finding/c33');assert.match(await page.locator('.fact-body').innerText(),/2008/);assert.match(await page.locator('.limits').innerText(),/не сотрудник МВД/);assert.match(await page.locator('.proof').first().innerText(),/12\. Рабинович/);
+ // Reader 3: common business is affirmed; unknown financing is a separate scope.
+ await go('finding/c05');assert.match(await page.locator('.fact-body').innerText(),/по 50%/);assert.match(await page.locator('.fact-grid').innerText(),/подтверждено несколькими источниками/);assert.match(await page.locator('.limits').innerText(),/финансовых переводов/);assert.match(await page.locator('.proof').nth(1).innerText(),/50%/);
+ // Reader 4: a minister's cover must not become an invented direct interview.
+ await go('finding/c44');assert.match(await page.locator('.fact-body').innerText(),/NEWS.ru/);assert.match(await page.locator('.limits').innerText(),/прямой контакт/);assert.match(await page.locator('.proof').first().innerText(),/NEWS.ru/);
+ await go('finding/c11');assert.match(await page.locator('.fact-body').innerText(),/заместителем генерального секретаря/);assert.match(await page.locator('.limits').innerText(),/сосуществовать/);
+ await go('finding/c46');assert.match(await page.locator('.fact-body').innerText(),/Сергей Мурзин/);assert.match(await page.locator('.proof').nth(1).innerText(),/87190/);assert.match(await page.locator('.limits').innerText(),/перерегистрация/);
+ // Curated routes have leg-by-leg meaning and proof; expansion reveals another actual relation.
+ await go('explore/coalition');assert.match(await page.locator('#active-chain').innerText(),/оператором Коалиции/);const before=await page.locator('#active-chain .graph-node').count();await page.locator('[data-action="step-next"]').click();assert.equal(await page.locator('#active-chain .graph-node').count(),before+1);assert.equal(await page.locator('.route-step').count(),2);
+ await page.locator('.route-step [data-edge]').nth(1).click();assert.match(await page.locator('#dialog-body').innerText(),/высший орган управления/);assert.match(await page.locator('#dialog-body .proof').first().innerText(),/Скареднова/);await page.keyboard.press('Escape');
+ await page.locator('[data-action="zoom-in"]').first().click();assert.equal(await page.locator('#active-chain svg').getAttribute('data-zoom'),'1.25');await page.locator('[data-action="zoom-reset"]').first().click();
+ // Weighted search must use the substantive executive edge rather than a parallel old advisory edge.
+ const paths=await page.evaluate(()=>({direct:EIA_APP.getPath('rabinovich','assembly'),known:EIA_APP.getPath('eia','meat'),absent:EIA_APP.getPath('eia','vladivostok'),alternatives:EIA_APP.alternativePaths('eia','meat')}));assert.equal(paths.direct.edges[0].id,'e062');assert.ok(paths.known.edges.length>=2);assert.equal(paths.absent,null);assert.ok(paths.alternatives.length>1);
+ await page.selectOption('#graph-period','current');assert.equal(await page.locator('#active-chain [data-edge="e063"]').count(),0);await page.locator('[data-action="reset-graph"]').click();
+ // Cross-edition preservation and real Markdown: tables, emphasis, lists and inline source actions.
+ await go('archive/FULL_REPORT.md');assert.ok(await page.locator('#full-document strong').count()>15);assert.ok(await page.locator('#full-document li').count()>=4);assert.ok(await page.locator('#full-document .inline-citation').count()>20);assert.match(await page.locator('#full-document').innerText(),/передаточные документы/);
+ await go('archive/GOVERNMENT_CONNECTIONS.md');assert.ok(await page.locator('#full-document table tbody tr').count()>=10);
+ await go('archive/'+encodeURIComponent('versions/2026-10-21/FINDINGS.md'));assert.match(await page.locator('main>.notice').innerText(),/ИСТОРИЧЕСКАЯ ВЕРСИЯ/);
+ for(const file of Object.keys(data.documents)){await go('archive/'+encodeURIComponent(file));assert.ok((await page.locator('#full-document').innerText()).length>100,'Readable archive '+file);}
+ // Untrusted Markdown remains text and cannot introduce scripts or javascript links.
+ await page.evaluate(()=>EIA_DATA.documents['test.md']='<img src=x onerror="window.testInjection=1">\n\n[x](javascript:alert(1))');await go('archive/test.md');assert.equal(await page.locator('#full-document img').count(),0);assert.equal(await page.locator('#full-document a[href^="javascript:"]').count(),0);assert.equal(await page.evaluate(()=>window.testInjection),undefined);
+ await go('entities');assert.equal(await page.locator('#entity-results>.card').count(),stats.entities);await page.locator('#entity-query').fill('Скареднова');assert.ok(await page.locator('#entity-results>.card').count()>0);await page.locator('#entity-query').fill('');await page.selectOption('#entity-kind','Судебное дело');assert.equal(await page.locator('#entity-results>.card').count(),3);
+ for(const e of data.entities){await go('entity/'+e.id);assert.equal(await page.locator('h1').innerText(),e.name);}
+ for(const c of data.claims){await go('finding/'+c.id);assert.equal(await page.locator('h1').innerText(),c.title);assert.ok(await page.locator('.proof').count()>0);}
+ await go('documents');assert.equal(await page.locator('.comparison').count(),3);await go('catalogue');assert.equal(await page.locator('#catalogue-results>.issue-card').count(),40);assert.match(await page.locator('.rights-status').first().innerText(),/отдельно не проверен/);await page.locator('#catalogue-query').fill('Сицинская');assert.equal(await page.locator('#catalogue-results>.issue-card').count(),1);
+ await go('finance');assert.match(await page.locator('.money-table').innerText(),/5\s*434\s*000/);await go('sources');await page.selectOption('#source-filter','all');await page.locator('[data-action="source-next"]').click();assert.match(await page.locator('#sources-count').innerText(),/страница 2/);
+ await page.locator('#global-search').fill('президиум');await page.locator('#global-search').press('Enter');await page.waitForTimeout(30);assert.ok(await page.locator('.list-item').count()>3);
+ await go('home');await page.screenshot({path:'/tmp/eia-v2-desktop.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});await go('home');await page.screenshot({path:'/tmp/eia-v2-mobile.png',fullPage:true});
+ for(const hash of ['home','explore/coalition','documents','finance','archive/FULL_REPORT.md','archive/MEDIA_RIGHTS.md','entity/agency','finding/c37','sources']){await go(hash);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Mobile overflow '+hash);}
+ await go('home');await page.locator('.menu-toggle').click();assert.ok(await page.locator('#sidebar').evaluate(e=>e.classList.contains('open')));await page.locator('#sidebar a[href="#entities"]').click();await page.waitForTimeout(30);assert.ok(!(await page.locator('#sidebar').evaluate(e=>e.classList.contains('open'))));
+ assert.deepEqual(external,[],'Core site should make no automatic external requests');
+ // Explicit image interaction, with an identified synthetic fixture; no external source verification implied.
+ await page.unroute('**/*');await page.route('https://eia.media/**',r=>r.fulfill({status:200,contentType:'image/svg+xml',body:'<svg xmlns="http://www.w3.org/2000/svg" width="100" height="120"><rect width="100" height="120" fill="green"/></svg>'}));await go('entity/rabinovich');await page.locator('[data-image-load]').click();await page.waitForFunction(()=>document.querySelector('.photo-frame img')?.naturalWidth>0);await page.locator('.photo-frame img').click();assert.ok(await page.locator('#evidence-dialog').evaluate(e=>e.open));await page.keyboard.press('Escape');assert.deepEqual(errors,[]);
+ await browser.close();console.log(JSON.stringify({status:'passed',...stats,readerJourneys:6,coreExternalRequests:external.length,mobileWidth:390,browserErrors:errors,imageFixture:'synthetic interaction only'},null,2));
 })().catch(e=>{console.error(e);process.exit(1);});

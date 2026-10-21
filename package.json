@@ -1,0 +1,13 @@
+{
+  "name": "eia-open-investigation",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "build": "python research/eia_media/tools/compile_research.py --check && python research/eia_media/tools/build_site.py",
+    "test:pipeline": "python research/eia_media/tools/verify_pipeline.py",
+    "test:site": "node research/eia_media/tools/verify_site.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

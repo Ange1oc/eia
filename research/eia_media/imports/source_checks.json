@@ -1,0 +1,310 @@
+[
+  {
+    "input_id": "W01",
+    "key": "44ed2a7fa26a",
+    "title": "",
+    "result": "HTTP Error 401: Unauthorized",
+    "characters": 0
+  },
+  {
+    "input_id": "W02",
+    "key": "e37002e3d97b",
+    "title": "",
+    "result": "HTTP Error 503: Service Unavailable",
+    "characters": 0
+  },
+  {
+    "input_id": "W03",
+    "key": "64f8ed5ca010",
+    "title": "АО ЕИА ГМГ, Санкт-Петербург (ИНН 7802975607), реквизиты, выписка из ЕГРЮЛ, адрес, почта, сайт, телефон, финансовые показатели",
+    "result": 200,
+    "characters": 10138
+  },
+  {
+    "input_id": "W04",
+    "key": "16f84fec8ec4",
+    "title": "Свяжитесь с нами · EIA",
+    "result": 200,
+    "characters": 3421
+  },
+  {
+    "input_id": "W09",
+    "key": "4fb850215e4d",
+    "title": "Magazines · EIA",
+    "result": 200,
+    "characters": 6619
+  },
+  {
+    "input_id": "W10",
+    "key": "018b48b50c26",
+    "title": "Eurasian Information Agency · EIA",
+    "result": 200,
+    "characters": 1877
+  },
+  {
+    "input_id": "W17",
+    "key": "fd34bcf45354",
+    "title": "Руководство · EIA",
+    "result": 200,
+    "characters": 1747
+  },
+  {
+    "input_id": "W19",
+    "key": "71987085151c",
+    "title": "Александр Рабинович возглавил АО «Евразийское информационное агентство Глобал Медиа Групп» | TezNet",
+    "result": 200,
+    "characters": 3838
+  },
+  {
+    "input_id": "W25",
+    "key": "96101d28f759",
+    "title": "EIA TV · EIA",
+    "result": 200,
+    "characters": 1293
+  },
+  {
+    "input_id": "W27",
+    "key": "0abb724da346",
+    "title": "Подписано соглашение о сотрудничестве между Ассамблеей Народов Мира и EIA Global Media Group · EIA",
+    "result": 200,
+    "characters": 4828
+  },
+  {
+    "input_id": "W29",
+    "key": "d027dbf38f58",
+    "title": "EIA Global Media Group и \"Стратеко\" оформили стратегическое сотрудничество · EIA",
+    "result": 200,
+    "characters": 3547
+  },
+  {
+    "input_id": "W35",
+    "key": "d6c857707e04",
+    "title": "Тарифы · EIA",
+    "result": 200,
+    "characters": 1977
+  },
+  {
+    "input_id": "W36",
+    "key": "a8eeb6632c28",
+    "title": "",
+    "result": "HTTP Error 500: Internal Server Error",
+    "characters": 0
+  },
+  {
+    "input_id": "W37",
+    "key": "57e7121003fd",
+    "title": "Александр Рабинович – Евразийское информационное агентстве Глобал Медиа Групп» – (EIA GMG) – стратегия трансформации",
+    "result": 200,
+    "characters": 6255
+  },
+  {
+    "input_id": "W38",
+    "key": "0d48317b78a3",
+    "title": "Iravunk.com | Александр Рабинович возглавил АО «Евразийское информационное агентство Глобал Медиа Групп» (JSC \"EIA GMG\") и анонсировал развитие инвестиционного направления.",
+    "result": 200,
+    "characters": 12063
+  },
+  {
+    "input_id": "W39",
+    "key": "0a46e3d97174",
+    "title": "Бизнес портал · EIA",
+    "result": 200,
+    "characters": 1286
+  },
+  {
+    "input_id": "W40",
+    "key": "1abaa2f3703c",
+    "title": "EIA Global Media Group und Strateco schließen strategische Kooperation · EIA",
+    "result": 200,
+    "characters": 3916
+  },
+  {
+    "input_id": "W05",
+    "key": "614d01718769",
+    "title": "Ижевчанин наградил Аршавина орденом «Честь и мужество»  // ИА Сусанин - проверенные новости Ижевска и Удмуртии, факты и описания событий.",
+    "result": 200,
+    "characters": 7748
+  },
+  {
+    "input_id": "W06",
+    "key": "77e36299d701",
+    "title": "Российская милиция вручила Аршавину орден \"Честь и мужество\" - NEWSru.co.il",
+    "result": 200,
+    "characters": 3398
+  },
+  {
+    "input_id": "W07",
+    "key": "511de917a73b",
+    "title": "Аллея журналистов: патриотическое кафе вместо деревьев  › - Новости СМИ - Лениздат.ру",
+    "result": 200,
+    "characters": 8787
+  },
+  {
+    "input_id": "W08",
+    "key": "af712b3c83fb",
+    "title": "Revistas · EIA",
+    "result": 200,
+    "characters": 6851
+  },
+  {
+    "input_id": "W41",
+    "key": "1b1a62800f8c",
+    "title": "",
+    "result": "HTTP Error 401: Unauthorized",
+    "characters": 0
+  },
+  {
+    "input_id": "W42",
+    "key": "b5a5aa219f4f",
+    "title": "",
+    "result": "HTTP Error 401: Unauthorized",
+    "characters": 0
+  },
+  {
+    "input_id": "W43",
+    "key": "3d791c276e76",
+    "title": "90.96.191.69 22.10.2026 02:22:13",
+    "result": 200,
+    "characters": 69
+  },
+  {
+    "input_id": "W44",
+    "key": "fdca7696a6af",
+    "title": "Приложение N 1. Состав Общественного совета при МВД по Удмуртской Республике. Приказ Министерства внутренних дел по УР от 26.06.2008 N 414 \"Об утверждении Состава Общественного совета при МВД по Удмуртской Республике\" (утратил силу) | ГАРАНТ",
+    "result": 200,
+    "characters": 8187
+  },
+  {
+    "input_id": "W11",
+    "key": "24ff09a36d05",
+    "title": "Медиа. Информация. Коммуникация (MIC)® – сетевое научно-образовательное издание | Главный портал МПГУ",
+    "result": 200,
+    "characters": 11618
+  },
+  {
+    "input_id": "W12",
+    "key": "efd0d08d720b",
+    "title": "Журнал \"Русский вестник Шпицбергена\" (РВШ)",
+    "result": 200,
+    "characters": 3873
+  },
+  {
+    "input_id": "W13",
+    "key": "fee870844ba2",
+    "title": "Арктикуголь",
+    "result": 200,
+    "characters": 2697
+  },
+  {
+    "input_id": "W14",
+    "key": "c990b4674272",
+    "title": "",
+    "result": 200,
+    "characters": 136331
+  },
+  {
+    "input_id": "W15",
+    "key": "0aecfc280b56",
+    "title": "Рекламодателям | Эгоист - неделовые интересы деловых людей",
+    "result": 200,
+    "characters": 2111
+  },
+  {
+    "input_id": "W16",
+    "key": "aa36a5ef42c2",
+    "title": "",
+    "result": "HTTP Error 401: Unauthorized",
+    "characters": 0
+  },
+  {
+    "input_id": "W18",
+    "key": "90861c4abc21",
+    "title": "Бизнес и спорт объединяются: эксперты Ассамблеи Народов Мира сформулировали концепцию народной дипломатии Нового мира — Ассамблея народов мира",
+    "result": 200,
+    "characters": 13460
+  },
+  {
+    "input_id": "W20",
+    "key": "7a4d43ca3e2d",
+    "title": "Контакты — Ассамблея народов мира",
+    "result": 200,
+    "characters": 6410
+  },
+  {
+    "input_id": "W21",
+    "key": "22ecc6ec867c",
+    "title": "Руководство — Ассамблея народов мира",
+    "result": 200,
+    "characters": 26582
+  },
+  {
+    "input_id": "W28",
+    "key": "f67f08208353",
+    "title": "Партнеры — Ассамблея народов мира",
+    "result": 200,
+    "characters": 4183
+  },
+  {
+    "input_id": "W22",
+    "key": "ca19e86f1336",
+    "title": "",
+    "result": "HTTP Error 401: Unauthorized",
+    "characters": 0
+  },
+  {
+    "input_id": "W23",
+    "key": "04786cbc9ad0",
+    "title": "",
+    "result": "HTTP Error 403: Forbidden",
+    "characters": 0
+  },
+  {
+    "input_id": "W24",
+    "key": "87639767fb39",
+    "title": "Стратеко",
+    "result": 200,
+    "characters": 506
+  },
+  {
+    "input_id": "W26",
+    "key": "8e251814a179",
+    "title": "WORLDBRICS — International Consortium WORLDBRICS",
+    "result": 200,
+    "characters": 62589
+  },
+  {
+    "input_id": "W30",
+    "key": "57a3e4759cde",
+    "title": "Коалиция Здоровья БРИКС",
+    "result": 200,
+    "characters": 19934
+  },
+  {
+    "input_id": "W31",
+    "key": "33179d7a8587",
+    "title": "Структура коалиции БРИКС",
+    "result": 200,
+    "characters": 3991
+  },
+  {
+    "input_id": "W32",
+    "key": "91fc848076ee",
+    "title": "",
+    "result": "HTTP Error 401: Unauthorized",
+    "characters": 0
+  },
+  {
+    "input_id": "W33",
+    "key": "ffa0d0d4315a",
+    "title": "Партнерство - Коалиция Здоровья БРИКС",
+    "result": 200,
+    "characters": 3486
+  },
+  {
+    "input_id": "W34",
+    "key": "fe6864c22c0b",
+    "title": "Новый выпуск «Народной дипломатии» на полях ПМЭФ-2026 - Коалиция Здоровья БРИКС",
+    "result": 200,
+    "characters": 3500
+  }
+]
