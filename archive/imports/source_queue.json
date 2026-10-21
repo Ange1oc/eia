@@ -1,0 +1,222 @@
+[
+  {
+    "input_id": "W01",
+    "description": "РБК Компании — АО «ЕИА ГМГ», регистрация и директор",
+    "url": "https://companies.rbc.ru/amp/ogrn/1267800056204/"
+  },
+  {
+    "input_id": "W02",
+    "description": "Inndex — АО «ЕИА ГМГ», капитал и регистратор",
+    "url": "https://inndex.ru/ul/sankt-peterburg/ogrn-1267800056204-0fe-ao-eia-gmg"
+  },
+  {
+    "input_id": "W03",
+    "description": "СПАРК — АО «ЕИА ГМГ», ОКВЭД",
+    "url": "https://spark-interfax.ru/sankt-peterburg/ao-eia-gmg-inn-7802975607-ogrn-1267800056204-5894b547046a2063e063159aa8c0f4fc"
+  },
+  {
+    "input_id": "W04",
+    "description": "Официальный сайт EIA — контакты, юридическое лицо и заявленные регистрации СМИ",
+    "url": "https://eia.media/ru/contact"
+  },
+  {
+    "input_id": "W09",
+    "description": "Каталог журналов EIA",
+    "url": "https://eia.media/en/magazines"
+  },
+  {
+    "input_id": "W10",
+    "description": "О проекте EIA и девяти журналах",
+    "url": "https://eia.media/en/about"
+  },
+  {
+    "input_id": "W17",
+    "description": "Официальная страница руководства EIA",
+    "url": "https://eia.media/ru/management"
+  },
+  {
+    "input_id": "W19",
+    "description": "TezNet — назначение Рабиновича и структура холдинга в заявлении",
+    "url": "https://teznet.ru/world/aleksandr-rabinovich-vozglavil-ao-evrazijskoe-informaczionnoe-agentstvo-global-media-grupp-24801.html"
+  },
+  {
+    "input_id": "W25",
+    "description": "EIA TV",
+    "url": "https://eia.media/ru/eia-tv"
+  },
+  {
+    "input_id": "W27",
+    "description": "EIA — соглашение с Ассамблеей 18.09.2026",
+    "url": "https://eia.media/ru/article/world/eia-anm-partnership-signing"
+  },
+  {
+    "input_id": "W29",
+    "description": "EIA — соглашение со «СтратЕКО» 22.09.2026",
+    "url": "https://eia.media/ru/article/world/eia-global-media-group"
+  },
+  {
+    "input_id": "W35",
+    "description": "Рекламный прайс EIA",
+    "url": "https://eia.media/ru/advertise"
+  },
+  {
+    "input_id": "W36",
+    "description": "«Регионы России» — стратегия EIA от 06.08.2026",
+    "url": "https://rrmag.ru/2026/08/06/aleksandr-rabinovich-i-novaya-strategiya-razvitiya-eia-gmg-ot-media-k-ekosisteme/"
+  },
+  {
+    "input_id": "W37",
+    "description": "«Эгоист» — стратегия от 17.08.2026",
+    "url": "https://egoistmag.ru/news/aleksandr-rabinovich-anonsiroval-strategiyu-transformacii-evraziyskogo-informacionnogo-agentstva-global-media-grupp-eia-gmg"
+  },
+  {
+    "input_id": "W38",
+    "description": "Iravunk — инвестиционная стратегия 06.08.2026",
+    "url": "https://iravunk.com/?l=ru&p=346230"
+  },
+  {
+    "input_id": "W39",
+    "description": "EIA — бизнес-портал Global Media Group, явная формулировка о партнёрах и WFRS / СТРАТЕКО / Бюро",
+    "url": "https://eia.media/ru/gmg"
+  },
+  {
+    "input_id": "W40",
+    "description": "EIA — немецкоязычная публикация о Global Media Group, иллюстрирует локализацию",
+    "url": "https://eia.media/de/article/world/eia-global-media-group"
+  },
+  {
+    "input_id": "W05",
+    "description": "«Сусанин», 04.07.2008, медиахолдинг «Честь имею»",
+    "url": "https://susanin.news/udmurtia/other/20080704-31608/"
+  },
+  {
+    "input_id": "W06",
+    "description": "NEWSru, 04.07.2008",
+    "url": "https://www.newsru.co.il/sport/04Jul2008/arshav8009.html"
+  },
+  {
+    "input_id": "W07",
+    "description": "«Лениздат», 2013, упоминание роли Рабиновича",
+    "url": "https://lenizdat.ru/articles/1117701/"
+  },
+  {
+    "input_id": "W08",
+    "description": "Каталог EIA с выпусками «Честь имею» в испанской локализации",
+    "url": "https://eia.media/es/magazines"
+  },
+  {
+    "input_id": "W41",
+    "description": "РБК — ООО «Издательство „Честь-Имею“» (2007–2016), историческая доля Рабиновича 50%",
+    "url": "https://companies.rbc.ru/id/1079847083414-ooo-izdatelstvo-chest-imeyu/"
+  },
+  {
+    "input_id": "W42",
+    "description": "РБК — другое одноимённое ООО 2022 года под руководством Мирзоева (ИНН 7802931110)",
+    "url": "https://companies.rbc.ru/id/1227800133120-ooo-mezhdunarodnyij-informatsionno-analiticheskij-mediaholding-chest-imeyu/"
+  },
+  {
+    "input_id": "W43",
+    "description": "E-ecolog — бухгалтерская карточка ООО Мирзоева, в том числе заявленная ликвидация 01.07.2026 (перепроверить ЕГРЮЛ)",
+    "url": "https://e-ecolog.ru/buh/2023/7802931110"
+  },
+  {
+    "input_id": "W44",
+    "description": "ГАРАНТ — состав общественного совета при МВД Удмуртии в приказе 26.06.2008 №414 (первичный приказ в публикации правовой системы)",
+    "url": "https://base.garant.ru/15738561/d8e34e7b9274ff56b4ab44c1bd6398fb/"
+  },
+  {
+    "input_id": "W11",
+    "description": "МПГУ — учредители и издатель MIC",
+    "url": "https://mpgu.su/ob-mpgu/struktura/faculties/institut-zhurnalistiki-kommunikatsii-i-mediaobrazovaniya/nauka/media-informacija-kommunikacija-mic-setevoe-nauchno-obrazovatelnoe-izdanie/"
+  },
+  {
+    "input_id": "W12",
+    "description": "«Арктикуголь» — раздел журнала «Русский вестник Шпицбергена»",
+    "url": "https://www.arcticugol.ru/content/rvsh"
+  },
+  {
+    "input_id": "W13",
+    "description": "«Арктикуголь» — восстановление выпуска журнала в 2024 году",
+    "url": "https://www.arcticugol.ru/news/russkij-vestnik-shpicbergena-vozobnovil-rabotu"
+  },
+  {
+    "input_id": "W14",
+    "description": "Официальный PDF «Русского вестника Шпицбергена», №1, март 2024, стр. 2 PDF",
+    "url": "https://www.arcticugol.ru/files/2024/rvsh/RVSH-1-2024.pdf"
+  },
+  {
+    "input_id": "W15",
+    "description": "«Эгоист» — его собственные реквизиты, главный редактор, издатель",
+    "url": "https://www.egoistmag.ru/advertisers"
+  },
+  {
+    "input_id": "W16",
+    "description": "РБК — точная карточка издательского ООО «АДК», 100% у Андрея Новикова, ИНН 7801723244",
+    "url": "https://companies.rbc.ru/id/1237800052379-obschestvo-s-ogranichennoj-otvetstvennostyu-agentstvo-delovyih-kommunikatsij/"
+  },
+  {
+    "input_id": "W18",
+    "description": "Официальный отчёт АНМ 30.09.2026 о сессии 19.09 с Рабиновичем, Гребенсковой, Мосалевой и Джамаем",
+    "url": "https://world-assembly.org/news/biznes-i-sport-obedinyayutsya-eksperty-assamblei-narodov-mira-sformulirovali-kontseptsiyu-narodnoy-diplomatii-novogo-mira"
+  },
+  {
+    "input_id": "W20",
+    "description": "АНМ — контакты, Рабинович как заместитель генерального секретаря",
+    "url": "https://world-assembly.org/contacts"
+  },
+  {
+    "input_id": "W21",
+    "description": "АНМ — руководство и Высший консультативный совет",
+    "url": "https://world-assembly.org/about/leadership"
+  },
+  {
+    "input_id": "W28",
+    "description": "АНМ — публичная страница партнёров/соглашений (отсутствие в текстовой выборке не доказывает отсутствия договора)",
+    "url": "https://world-assembly.org/about/partnership-agreements"
+  },
+  {
+    "input_id": "W22",
+    "description": "РБК — ООО «Евразийский рейтинг», доли и финансы",
+    "url": "https://companies.rbc.ru/id/1207800128480-obschestvo-s-ogranichennoj-otvetstvennostyu-rest/"
+  },
+  {
+    "input_id": "W23",
+    "description": "EGRUL.org — история долей ООО «Евразийский рейтинг»",
+    "url": "https://egrul.org/7806576890"
+  },
+  {
+    "input_id": "W24",
+    "description": "СтратЕКО — услуги и публичная роль Гребенсковой",
+    "url": "https://strateko.ru/"
+  },
+  {
+    "input_id": "W26",
+    "description": "WORLDBRICS — Самир Джамай в Марокко, самопрезентация консорциума",
+    "url": "https://worldbrics.com/"
+  },
+  {
+    "input_id": "W30",
+    "description": "Коалиция здоровья БРИКС — официальный сайт, руководители и оператор",
+    "url": "https://healthcare-brics.com/"
+  },
+  {
+    "input_id": "W31",
+    "description": "Коалиция — структура, документы и оператор-АНО",
+    "url": "https://healthcare-brics.com/struktura-koaliczii/"
+  },
+  {
+    "input_id": "W32",
+    "description": "РБК — АНО «Центр здоровьесбережения БРИКС», ОГРН 1237700448292",
+    "url": "https://companies.rbc.ru/id/1237700448292-ano-tsentr-zdorovesberezheniya-briks/"
+  },
+  {
+    "input_id": "W33",
+    "description": "Коалиция — условия платного членства",
+    "url": "https://healthcare-brics.com/partnerstvo/"
+  },
+  {
+    "input_id": "W34",
+    "description": "Коалиция — выпуск «Народной дипломатии» на ПМЭФ-2026",
+    "url": "https://healthcare-brics.com/novyj-vypusk-narodnoj-diplomatii-na-polyah-pmef-2026/"
+  }
+]
