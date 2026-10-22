@@ -10,38 +10,57 @@ MANIFEST=R/'data/generated-manifest.json'
 
 def digest(data):return hashlib.sha256(data).hexdigest()
 def refs(ids):return ' '.join('['+x+']' for x in dict.fromkeys(ids))
+def reader_profile(data, entity):
+    profile=data.get('reader',{}).get('profiles',{}).get(entity['id'])
+    if not profile:return entity['body']+'\n'
+    text=profile['lead']+'\n'
+    for title,paragraph in profile['sections']:
+        text+='\n### '+title+'\n\n'+paragraph+'\n'
+    text+='\n**Наш вывод.** '+profile['conclusion']+'\n'
+    # Keep substantive source detail, while omitting infrastructure diagnostics.
+    if entity['id']!='domain':
+        text+='\n### Дополнительные сведения из источников\n\n'+entity['body']+'\n'
+    return text
+
 def exports(d):
     E={e['id']:e for e in d['entities']};P={p['id']:p for p in d['evidence']}
-    out={};preamble='\n\nСправочник из канонического `data/research.json`. Редактируйте структурированные записи; авторские аналитические главы находятся в FULL_REPORT.md, GOVERNMENT_CONNECTIONS.md, MEDIA_RIGHTS.md, FINANCES.md и LEGAL.md.\n'
+    out={};preamble='\n\nЗдесь объясняется, что удалось установить, почему это важно и на какой вопрос пока нет ответа. Документ, заявление участника и наш собственный вывод рассматриваются отдельно. Нажмите на название источника рядом с абзацем, если хотите проверить основание.\n'
     for name,people in [('PEOPLE.md',True),('COMPANIES.md',False)]:
         text=('# Профессиональные досье' if people else '# Компании, институты и медиапроекты')+preamble
         for e in d['entities']:
             if (e['kind']=='Человек')!=people:continue
-            text+='\n## '+e['name']+'\n\n'+e['body']+'\n\n'
-            fields=[f'{k}: {e[k]}' for k in ['inn','ogrn','registered','closed','capital'] if e.get(k) is not None]
+            text+='\n## '+e['name']+'\n\n'+reader_profile(d,e)+'\n'
+            labels={'inn':'ИНН','ogrn':'ОГРН','registered':'Дата регистрации','closed':'Дата закрытия','capital':'Уставный капитал'}
+            fields=[f'{labels[k]}: {e[k]}' for k in labels if e.get(k) is not None]
             text+='; '.join(fields)+'\n\n'+refs(e['sources'])+'\n'
             es=[x for x in d['edges'] if e['id'] in [x['source'],x['target']]]
-            for x in es:text+='\n- '+E[x['source']]['name']+' → **'+x['relation']+'** → '+E[x['target']]['name']+'. '+x['period']+'. '+x['significance']+' '+refs(x['sources'])+'\n'
+            if es:text+='\n### Конкретные связи и их значение\n'
+            for x in es:text+='\n- **'+x['relation']+'**. Участники: '+E[x['source']]['name']+' и '+E[x['target']]['name']+'. Период: '+x['period']+'. '+x['significance']+' '+refs(x['sources'])+'\n'
         out[name]=text
     text='# Находки: факт, значение и доказательства'+preamble
     for c in d['claims']:
-        text+='\n## '+c['id']+' · '+c['title']+'\n\n'+c['body']+'\n\n**Значение.** '+c['significance']+'\n\n**Предел.** '+c['limits']+'\n\n**Статус факта:** '+c['fact_status']+'. **Тип источника:** '+c['evidence_type']+'.\n'
+        reading=d.get('reader',{}).get('findings',{}).get(c['id'],{})
+        text+='\n## '+c['title']+'\n\n**Что обнаружено.** '+c['body']+'\n\n**Как это понимать.** '+reading.get('explanation',c['significance'])+'\n\n**Почему это важно.** '+c['significance']+'\n\n**Наш вывод.** '+reading.get('conclusion',c['significance'])+'\n\n**На какой вопрос пока нет ответа.** '+c['limits']+'\n\n**Основание:** '+c['evidence_type']+'. Оценка факта: '+c['fact_status']+'.\n'
         for id in c['evidence']:
             p=P[id];text+='\n> '+p['quote']+'\n\n'+p['location']+'. '+refs([p['source']])+'\n'
     out['FINDINGS.md']=text
     text='# Отдельные связи и исследовательские маршруты'+preamble
     for r in d['routes']:text+='\n## '+r['title']+'\n\n'+r['body']+'\n\n'+' → '.join(E[x]['name'] for x in r['nodes'])+'\n'
-    for e in d['edges']:text+='\n## '+e['id']+' · '+E[e['source']]['name']+' → '+E[e['target']]['name']+'\n\n**'+e['relation']+'**. '+e['period']+(' — '+str(e['end']) if e.get('end') else '')+'.\n\n'+e['significance']+'\n\n'+e['fact_status']+'; '+e['kind']+'. '+refs(e['sources'])+'\n'
+    for e in d['edges']:text+='\n## '+E[e['source']]['name']+' и '+E[e['target']]['name']+'\n\n**Какая связь:** '+e['relation']+'. Период: '+e['period']+(' — '+str(e['end']) if e.get('end') else '')+'.\n\n**Что это объясняет.** '+e['significance']+'\n\nОценка факта: '+e['fact_status']+'. '+refs(e['sources'])+'\n'
     out['CONNECTIONS.md']=text
     text='# Хронология'+preamble
     for t in sorted(d['timeline'],key=lambda x:x['date']):text+='\n## '+t['date']+' · '+t['title']+'\n\n'+t['body']+'\n\n'+refs(t['sources'])+'\n'
     out['TIMELINE.md']=text
     text='# Источники: доступ, происхождение и использование'+preamble
     for s in d['sources']:
-        text+='\n## '+s['id']+' · '+(s.get('title') or s['url'])+'\n\n'+s['url']+'\n\nДоступ: '+s['accessed']+'. '+s.get('content_status','')+'. '+str(s.get('error') or 'HTTP '+str(s.get('status','?')))+'.\n\n'+s['reliability']+'\n\nSHA-256: '+s.get('sha256','не получен')+'\n'
+        access='Содержание пока не удалось получить.' if s.get('error') or s.get('characters',0)<100 else 'Материал получен для проверки.'
+        text+='\n## '+(s.get('title') or s['publisher'])+'\n\n'+access+' Проверка: '+s['accessed'][:10]+'.\n\n'+s['reliability']+'\n\n[Открыть оригинал]('+s['url']+') '+refs([s['id']])+'\n'
     out['SOURCES.md']=text
     text='# Открытые вопросы и результаты проверки'+preamble
-    for l in d['leads']:text+='\n## '+l['id']+' · '+l['title']+'\n\n'+l.get('status','открыто')+'. '+l['body']+'\n'
+    for l in d['leads']:
+        question=d.get('reader',{}).get('questions',{}).get(l['id'],{})
+        body=__import__('re').sub(r'\s*\(c\d+\)','',l['body'])
+        text+='\n## '+question.get('title',l['title'])+'\n\n**Что известно сейчас.** '+l.get('status','Вопрос открыт')+'. '+body+'\n\n**Зачем нужен ответ.** '+question.get('why','Ответ позволит уточнить конкретное отношение.')+'\n'
     out['LEADS.md']=text
     for name,items,fields in [('nodes.csv',d['entities'],['id','name','kind','country','inn','ogrn','registered','closed','summary']),('edges.csv',d['edges'],['id','source','target','relation','period','end','fact_status','kind','significance'])]:
         f=io.StringIO(newline='');w=csv.DictWriter(f,fieldnames=fields,extrasaction='ignore',lineterminator='\n');w.writeheader();w.writerows(items);out[name]=f.getvalue()
@@ -65,6 +84,13 @@ def validate(d):
         assert len(r['nodes'])==len(r['edge_ids'])+1,r['id']
         for a,b,id in zip(r['nodes'],r['nodes'][1:],r['edge_ids']):assert {a,b}=={G[id]['source'],G[id]['target']},(r['id'],id)
     assert len({e['significance'] for e in d['edges']})==len(d['edges']),'Repeated significance'
+    if 'reader' in d:
+        assert set(d['reader']['profiles'])==sets['entities'],'Every dossier needs a reader explanation'
+        assert set(d['reader']['findings'])==sets['claims'],'Every finding needs an interpretation'
+        for id,profile in d['reader']['profiles'].items():
+            assert len(profile['sections'])>=2 and profile['lead'] and profile['conclusion'],id
+        for id,reading in d['reader']['findings'].items():
+            assert reading['explanation'] and reading['conclusion'],id
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--write',action='store_true');parser.add_argument('--check',action='store_true');args=parser.parse_args()
