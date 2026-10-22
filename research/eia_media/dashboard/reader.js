@@ -129,7 +129,7 @@
   }
   document.addEventListener('click', event=>{
     const term=event.target.closest('[data-term]');if(term){showTerm(term.dataset.term);return;}
-    const scroll=event.target.closest('[data-scroll]');if(scroll){const target=document.getElementById(scroll.dataset.scroll);if(target){target.scrollIntoView({block:'start',behavior:'smooth'});target.setAttribute('tabindex','-1');target.focus({preventScroll:true});}}
+    const scroll=event.target.closest('[data-scroll]');if(scroll){const target=document.getElementById(scroll.dataset.scroll);if(target){const header=document.querySelector('.topbar')?.getBoundingClientRect().height||0;const navigation=document.querySelector('.reader-inpage-nav')?.getBoundingClientRect().height||0;const top=Math.max(0,window.scrollY+target.getBoundingClientRect().top-header-navigation-20);window.scrollTo({top,behavior:'smooth'});target.setAttribute('tabindex','-1');target.focus({preventScroll:true});}}
   });
   window.EIA_READER=Object.freeze({guide,esc,titles,summaries,appendices,documentTitle,takeaway,profile,finding,sourceName,sourceState,date,enhance,glossary});
 })();
