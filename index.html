@@ -7,10 +7,13 @@
   <meta name="theme-color" content="#f5f3eb">
   <title>EIA · Открытое досье</title>
   <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=20261022-r2">
-  <script defer src="site-data.js?v=20261022-r2"></script>
+  <link rel="stylesheet" href="style.css?v=20261022-r3">
+  <link rel="stylesheet" href="reading.css?v=20261022-r3">
+  <script defer src="site-data.js?v=20261022-r3"></script>
   <script defer src="vendor/markdown-it.min.js"></script>
-  <script defer src="app.js?v=20261022-r2"></script>
+  <script defer src="reader.js?v=20261022-r3"></script>
+  <script defer src="reader-views.js?v=20261022-r3"></script>
+  <script defer src="app.js?v=20261022-r3"></script>
 </head>
 <body>
   <a class="skip" href="#content">Перейти к содержанию</a>
@@ -18,7 +21,7 @@
     <button class="menu-toggle icon-button" aria-label="Открыть меню" aria-expanded="false">☰</button>
     <a class="brand" href="#home"><span class="brand-mark">E</span><span>EIA <span class="brand-sub">ЗА МЕДИАВИТРИНОЙ</span></span></a>
     <form id="search-form" role="search"><label class="sr-only" for="global-search">Поиск по всему исследованию</label><span aria-hidden="true">⌕</span><input id="global-search" type="search" placeholder="Человек, компания, документ…" autocomplete="off"><kbd>/</kbd><button class="sr-only" type="submit">Найти</button></form>
-    <span class="edition">Срез на 22 октября 2026 <span class="live-dot"></span></span>
+    <span class="edition">Сведения на 22 октября 2026 <span class="live-dot"></span></span>
   </header>
   <aside class="sidebar" id="sidebar">
     <div class="nav-label">ИССЛЕДОВАНИЕ</div>
@@ -34,8 +37,9 @@
       <a href="#sources" data-nav="sources"><span>↗</span>Источники</a>
       <a href="#leads" data-nav="leads"><span>◇</span>Открытые вопросы</a>
       <a href="#archive" data-nav="archive"><span>≡</span>Полные материалы</a>
+      <a href="#glossary" data-nav="glossary"><span>?</span>Понятный словарь</a>
     </nav>
-    <div class="sidebar-note"><span class="nav-label">КАК ЧИТАТЬ</span><p>Факт, заявление и гипотеза имеют разный вес.</p><a href="#method">Как проверялись факты <span>↗</span></a></div>
+    <div class="sidebar-note"><span class="nav-label">КАК ЧИТАТЬ</span><p>В начале — главное. Затем объяснение и вывод. Подчёркнутое слово можно нажать.</p><a href="#method">Как проверялись факты <span>↗</span></a></div>
     <div class="sidebar-bottom">Независимый исследовательский материал.<br>Не является сайтом EIA Media.</div>
   </aside>
   <main id="content" tabindex="-1"></main>
